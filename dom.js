@@ -60,6 +60,12 @@ ASN1.prototype.toDOM = function () {
             shortContent;
         content = String(content); // it might be a number
         shortContent = (content.length > lineLength) ? content.substring(0, lineLength) + DOM.ellipsis : content;
+        if ((typeof oids === 'object') && (this.tag.isUniversal() && (this.tag.tagNumber == 0x06))) {
+            var oid = oids[content];
+            if (oid) {
+                shortContent = oid.d + " ("+shortContent+", "+oid.c+")"
+            }
+        }
         preview.appendChild(DOM.text(shortContent));
         head.appendChild(preview);
         content = DOM.breakLines(content, lineLength);
